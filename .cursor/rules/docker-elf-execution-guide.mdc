@@ -1,0 +1,116 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Guide: Running & Debugging Linux ELF Binaries in Docker on macOS
+
+This guide outlines the steps to set up a Docker environment for running and debugging Linux ELF (Executable and Linkable Format) binaries, common in CTF challenges, especially when your host is macOS and the binary might be for a different architecture (e.g., x86-64 binary on an ARM-based Mac).
+
+## 1. Prerequisites
+
+- **Docker Desktop for Mac**: Ensure it's installed and running.
+- **Challenge Files**: Have the ELF binary and any associated files (e.g., `libc.so`, exploit scripts) in a local directory.
+
+## 2. Identify Binary Architecture (Optional but Recommended)
+
+If you have a Linux environment or appropriate tools on your Mac (like `file`), determine the binary's architecture (e.g., x86-64, ARM64). The `checksec` tool (once inside a Linux Docker container) can also show this.
+
+```bash
+# Example using 'file' command on the binary
+file ./your_binary_name
+```
+
+## 3. Docker Container Setup
+
+### a. Choose Docker Image and Platform
+
+- **Image**: A common choice is `ubuntu` (e.g., `ubuntu:latest` or a specific LTS version).
+- **Platform (Crucial for ARM Macs running x86-64 binaries)**:
+  - If your Mac is Apple Silicon (M1/M2/M3, etc.) and the binary is x86-64 (common for CTFs), you **must** specify `--platform linux/amd64`.
+  - If your Mac is Intel-based and the binary is x86-64, you usually don't need to specify the platform.
+  - If the binary matches your Mac's architecture (e.g., ARM64 binary on an ARM Mac), you usually don't need to specify the platform.
+
+### b. Volume Mount Your Working Directory
+
+Use the `-v` flag to link your local directory (containing the binary and scripts) to a directory inside the container. This allows you to edit files locally and have them immediately available in the container.
+
+Format: `-v /path/on/your/mac:/path/inside/container`
+
+### c. Privileges for Debugging (if needed)
+
+If you plan to use GDB and encounter `ptrace` errors (common when emulating architectures), run the container with the `--privileged` flag.
+
+### d. Example Docker Run Command
+
+```bash
+# For an x86-64 binary on an Apple Silicon Mac, needing GDB
+docker run -it \
+    --platform linux/amd64 \
+    --privileged \
+    --name ctf_env_x86_64 \
+    -v /Users/yourusername/path/to/your/ctf_challenge_directory:/mnt/ctf \
+    ubuntu bash
+
+# For a binary matching your Mac's architecture (or Intel Mac with x86-64 binary)
+# and potentially not needing --privileged if GDB works without it:
+docker run -it \
+    --name ctf_env \
+    -v /Users/yourusername/path/to/your/ctf_challenge_directory:/mnt/ctf \
+    ubuntu bash
+```
+
+- Replace `/Users/yourusername/path/to/your/ctf_challenge_directory` with the actual path to your files.
+- `--name` gives your container a memorable name.
+- `bash` (or another shell) starts an interactive session.
+
+## 4. Inside the Docker Container
+
+Once you're in the container's shell:
+
+### a. Navigate to Your Mounted Directory
+
+```bash
+cd /mnt/ctf # Or the path you specified in the -v flag
+```
+
+### b. Install Necessary Tools
+
+You'll likely need tools for analysis and exploitation. For an Ubuntu base:
+
+```bash
+apt update
+sudo apt install -y gdb python3 python3-pip checksec build-essential
+
+# For pwntools (Python exploitation library)
+# Try apt first on newer systems:
+sudo apt install -y python3-pwntools
+
+# If apt fails for pwntools, or you need a specific version via pip:
+# sudo apt install -y python3-venv
+# python3 -m venv .venv
+# source .venv/bin/activate
+# pip3 install pwntools
+# Deactivate venv with 'deactivate' when done if you used it.
+```
+
+### c. Make Binaries Executable
+
+```bash
+chmod +x ./your_binary_name
+```
+
+## 5. Running and Debugging
+
+- **Run directly**: `./your_binary_name`
+- **Debug with GDB**: `gdb ./your_binary_name`
+- **Run Python exploit scripts**: `python3 your_exploit_script.py`
+
+## 6. Stopping and Restarting the Container
+
+- **Exit container shell**: `exit`
+- **Stop container (from Mac terminal)**: `docker stop ctf_env_x86_64` (or your container name)
+- **Restart container (from Mac terminal)**: `docker start ctf_env_x86_64`
+- **Attach to a running container (from Mac terminal)**: `docker exec -it ctf_env_x86_64 bash`
+
+This rule covers the common scenario based on our recent CTF. Remember to adapt paths and tool installations as needed for specific challenges.
