@@ -1,0 +1,18 @@
+version: '3'
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:5000"
+    depends_on:
+      - tracking-app
+
+  tracking-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.tracking
+    expose:
+      - "9000"
+    hostname: post-tracking

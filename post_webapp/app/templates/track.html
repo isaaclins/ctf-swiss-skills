@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Interstellar Cargo Tracker - Track</title>
+    <link rel="stylesheet" href="/templates/styles.css">
+</head>
+<body>
+    <h1>Interstellar Cargo Tracker</h1>
+    <h3>Planetary Orbital Shipping & Transport (POST)</h3>
+    <nav>
+        <a href="/">Home</a> | <a href="/services">Services</a> | <a href="/shipments">Shipments</a> | <a href="/track">Track Cargo</a>
+    </nav>
+    <p>Enter a tracking URL (e.g., http://post-tracking:9000/shipments/123 for shipment #PX-123)</p>
+    <form action="/track" method="post">
+        <input type="text" name="url" placeholder="Enter cargo tracking URL" value="{{ url }}">
+        <input type="submit" value="Track Shipment">
+    </form>
+    {{ result | safe }}
+</body>
+</html>

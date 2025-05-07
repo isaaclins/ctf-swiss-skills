@@ -1,0 +1,8 @@
+{
+    "shipment_id": "PX-456",
+    "status": "Delivered",
+    "estimated_arrival": "3024-09-30",
+    "origin": "Moon Base",
+    "destination": "Orbital Station Beta",
+    "cargo": ["Oxygen Tanks", "Food Rations"]
+}

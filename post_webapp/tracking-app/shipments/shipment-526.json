@@ -1,0 +1,8 @@
+{
+    "shipment_id": "PX-526",
+    "status": "In Transit",
+    "estimated_arrival": "3024-10-15",
+    "origin": "Earth",
+    "destination": "Mars Colony Alpha",
+    "cargo": ["Water Purifiers", "Solar Panels"]
+  }
