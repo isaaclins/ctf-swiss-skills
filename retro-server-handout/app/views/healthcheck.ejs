@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Retro Server Healthcheck</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>System Healthcheck Interface</h1>
+  <form method="post" action="/check">
+    <select name="cmd">
+      <option value="hostname">hostname (no args)</option>
+      <option value="uptime">uptime (no args)</option>
+      <option value="df">df (e.g., -h, /path)</option>
+      <option value="free">free (e.g., -h, -m)</option>
+      <option value="who">who (no args)</option>
+      <option value="netstat">netstat (e.g., -tuln)</option>
+    </select>
+    <input type="text" name="arg" placeholder="Arguments (optional)">
+    <button type="submit">Run Check</button>
+  </form>
+  <% if (output) { %>
+    <pre><%= output %></pre>
+  <% } %>
+
+  <div class="footer">
+    === RetroTech Inc. 1995 ===<br>
+    [SYSTEM ACTIVE] Est. 1995 - "We Compute, You Win!"
+  </div>
+</body>
+</html>

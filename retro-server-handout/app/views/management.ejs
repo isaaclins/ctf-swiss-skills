@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RetroTech Management</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>RetroTech Management & Patching</h1>
+  <div class="content-box">
+    <p><strong>Management:</strong> Administered via RetroTech Control Suite v1.2</p>
+    <p><strong>Last Patch:</strong> April 1995 Security Update</p>
+    <p><strong>Update Method:</strong> Floppy Disk Distribution</p>
+    <p><strong>Maintenance:</strong> Scheduled bi-annual reboot</p>
+
+    <h2>Installed Software (Node.js Packages)</h2>
+    <ul>
+      <% npmPackages.forEach(pkg => { %>
+        <li><strong><%= pkg.name %>:</strong> v<%= pkg.version %></li>
+      <% }) %>
+    </ul>
+
+    <h2>System Packages (Alpine Linux)</h2>
+    <ul>
+      <% apkPackages.forEach(pkg => { %>
+        <li><strong><%= pkg.name %>:</strong> <%= pkg.version %></li>
+      <% }) %>
+    </ul>
+  </div>
+  <p><a href="/">Back to Home</a></p>
+
+  <div class="footer">
+    === RetroTech Inc. 1995 ===<br>
+    [MANAGEMENT INFO] Est. 1995 - "We Compute, You Win!"
+  </div>
+</body>
+</html>

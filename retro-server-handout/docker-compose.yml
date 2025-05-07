@@ -1,0 +1,6 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5003:5003"
+    read_only: true
