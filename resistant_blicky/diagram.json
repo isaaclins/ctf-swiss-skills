@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-breadboard-half",
+      "id": "bb1",
+      "top": 362.3,
+      "left": 42.1,
+      "rotate": 270,
+      "attrs": {}
+    },
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 39, "left": 66.6, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 339.95,
+      "left": 115.2,
+      "attrs": { "value": "10000" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 339.95,
+      "left": 192,
+      "attrs": { "value": "10000" }
+    }
+  ],
+  "connections": [
+    [ "bb1:28b.j", "bb1:bn.23", "black", [ "h0" ] ],
+    [ "uno:5V", "bb1:tp.25", "red", [ "v28.7", "h-130.6", "v38.6" ] ],
+    [ "uno:GND.2", "bb1:bn.25", "black", [ "v28.7", "h99.9", "v38.6" ] ],
+    [ "bb1:28t.d", "uno:A0", "blue", [ "v-67.2", "h92.2" ] ],
+    [ "r1:1", "bb1:tp.23", "", [ "$bb" ] ],
+    [ "r1:2", "bb1:28t.c", "", [ "$bb" ] ],
+    [ "r2:1", "bb1:28t.e", "", [ "$bb" ] ],
+    [ "r2:2", "bb1:28b.i", "", [ "$bb" ] ]
+  ],
+  "dependencies": {}
+}
